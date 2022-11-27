@@ -6,8 +6,9 @@
     "start": "nodemon index.js",
     "server": "nodemon index.js",
     "client": "npm start --prefix views",
+    "clientinstall": "npm install --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix views && npm run build --prefix views"
+    "render-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix views && npm run build --prefix views"
   },
   "author": "z3phyrondevs",
   "license": "MIT",
