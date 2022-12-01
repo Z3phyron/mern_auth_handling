@@ -1,3 +1,4 @@
+import { Switch } from "@nextui-org/react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
@@ -14,23 +15,28 @@ const fadeIn = keyframes`
 `;
 
 export const Container = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 10% 5% auto;
+  grid-gap: 20px;
   align-items: center;
   height: 10vh;
   padding: 0 5%;
- 
+  background: ${(props) => props.theme.body};
 `;
 
-export const Logo = styled.div`
+export const Logo = styled(Link)`
   font-weight: 400;
   font-size: 20px;
+  text-decoration: none;
+  color: ${(props) => props.theme.text};
 `;
 
 export const Toggle = styled.div`
   font-size: 25px;
   display: none;
-  @media screen and (max-width: 900px) {
+  color: ${(props) => props.theme.text};
+   @media screen and
+    (max-width: 900px) {
     display: block;
   }
 `;
@@ -39,6 +45,7 @@ export const Menu = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
+  margin-left: auto;
 
   @media screen and (max-width: 900px) {
     position: absolute;
@@ -56,5 +63,8 @@ export const Menu = styled.div`
   }
 `;
 export const LinkEl = styled(Link)`
-  color: #333;
+  color: ${(props) => props.theme.text};
+`;
+export const SwitchEl = styled(Switch)`
+ margin-left: auto;
 `;

@@ -168,6 +168,24 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
+export const verifyMail = createAsyncThunk(
+  "auth/verifyMail",
+  async (data, thunkAPI) => {
+    try {
+     
+
+      return await authService.verifyMail(data);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 
 export const SignOut = createAsyncThunk("auth/logout", async () => {
   await authService.SignOut();
@@ -329,7 +347,21 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = "Error Updating Profile!!!";
-      });
+      })
+      .addCase(verifyMail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(verifyMail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+       
+        state.message = "Email Verified  Successully!!!";
+      })
+      .addCase(verifyMail.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = "Error Verifying Email!!!";
+      })
   },
 });
 

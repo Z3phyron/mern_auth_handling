@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Container, LinkEl, Logo, Menu, Toggle } from "./styles";
-
+import { Container, LinkEl, Logo, Menu, Toggle, SwitchEl } from "./styles";
 import { HiBars3BottomRight } from "react-icons/hi2";
-import { IoCloseOutline } from "react-icons/io5";
+import { IoCloseOutline, IoMoonSharp } from "react-icons/io5";
+
+import { MdWbSunny } from "react-icons/md";
 import { Button } from "@nextui-org/react";
 import { SignOut } from "../../features/auth/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
-
 
 const SignedOutRoutes = [
   {
@@ -38,16 +38,33 @@ const SignedInRoutes = [
   },
 ];
 
-const Index = () => {
-  const {  token } = useSelector((state) => state.auth);
+const Index = (props) => {
+  const { token } = useSelector((state) => state.auth);
+  const [mode, setMode] = useState(false);
   const [toggle, setToggle] = useState(false);
+
   const dispatch = useDispatch();
+
+  const { toggleTheme } = props;
+
+  const changeMode = () => {
+    setMode(!mode);
+    toggleTheme();
+  };
   return (
     <Container>
-      <Logo>Logo</Logo>
+      <Logo to="/">Logo</Logo>
       <Toggle onClick={() => setToggle(!toggle)}>
         {toggle ? <IoCloseOutline /> : <HiBars3BottomRight />}
       </Toggle>
+      <SwitchEl
+        checked={mode}
+        size="sm"
+        color="secondary"
+        onChange={changeMode}
+        iconOn={<MdWbSunny />}
+        iconOff={<IoMoonSharp />}
+      />
       <Menu toggle={toggle}>
         {token
           ? SignedInRoutes.map((route) => (
@@ -62,7 +79,7 @@ const Index = () => {
             ))}
 
         {token ? (
-          <Button auto color="error" onPress={() => dispatch(SignOut())}>
+          <Button auto color="error" size='sm' onPress={() => dispatch(SignOut())}>
             Sign Out
           </Button>
         ) : null}

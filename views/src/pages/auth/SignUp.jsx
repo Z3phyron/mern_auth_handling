@@ -61,7 +61,7 @@ const SignUp = () => {
       }, 2000);
 
       return () => clearTimeout(getData);
-    } 
+    }
   }, [
     isSuccess,
     navigate,
@@ -127,8 +127,8 @@ const SignUp = () => {
                 value={email}
                 onChange={onChange}
                 status={user ? "error" : null}
-                helperColor={'error'}
-                helperText={user ? 'user with email already exists' : null}
+                helperColor={"error"}
+                helperText={user ? "user with email already exists" : null}
               />
             </FormCtrl>
             <FormCtrl>
@@ -155,13 +155,7 @@ const SignUp = () => {
                 onChange={onChange}
               />
             </FormCtrl>
-            <Button
-              rounded
-              shadow
-              type="submit"
-              size={"lg"}
-              disabled={isLoading || isSuccess}
-            >
+            <Button rounded type="submit" size={"lg"}>
               {isLoading ? (
                 <Loading type="points" color={"white"} className={"btn"} />
               ) : (

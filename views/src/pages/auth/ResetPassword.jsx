@@ -1,33 +1,30 @@
-import { Avatar, Button, Input, Loading } from "@nextui-org/react";
+import {  Button, Input, Loading } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
 import { Container, Form, FormCtrl, Wrapper } from "./styles";
 import { useDispatch, useSelector } from "react-redux";
-import useAxiosPrivate from "../../hook/useAxiosPrivate";
 import toast from "react-hot-toast";
 import {
-  getUser,
-  loadUser,
   reset,
-  signIn,
+  resetPassword,
 } from "../../features/auth/AuthSlice";
 import { useNavigate } from "react-router-dom";
 
 const INITAIL_FORM = {
-  email: "",
   password: "",
+  confirmPassword: "",
 };
 
-const SignIn = () => {
-  const { token, isLoading, isError, isSuccess, message, user } = useSelector(
+const ResetPassword = () => {
+  const { isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
   const [formData, setFormData] = useState(INITAIL_FORM);
-  const { email, password } = formData;
+  const { password, confirmPassword } = formData;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const axiosPrivate = useAxiosPrivate();
+ 
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -40,44 +37,24 @@ const SignIn = () => {
     if (isError) {
       toast.error(message);
     }
-    if (isSuccess && token) {
+    if (isSuccess) {
       toast.success(message);
-      navigate("/");
+
       dispatch(reset());
       setTimeout(() => {
-        dispatch(loadUser(axiosPrivate));
+        navigate("/sign-in");
       }, 2000);
     }
-    if (email) {
-      const getData = setTimeout(() => {
-        const data = {
-          email: email,
-        };
-        dispatch(getUser(data));
-        dispatch(reset())
-      }, 2000);
-
-      return () => clearTimeout(getData);
-    }
-  }, [
-    isSuccess,
-    navigate,
-    axiosPrivate,
-    dispatch,
-    isError,
-    message,
-    token,
-    email,
-  ]);
+  }, [isSuccess, navigate, dispatch, isError, message]);
 
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = {
-      email,
       password,
+      confirmPassword,
     };
     // alert(JSON.stringify(formData));
-    dispatch(signIn(userData));
+    dispatch(resetPassword(userData));
     dispatch(reset());
   };
 
@@ -86,39 +63,6 @@ const SignIn = () => {
       <Container>
         <Wrapper>
           <Form onSubmit={onSubmit}>
-            <div className="user">
-              {isLoading ? <Loading type="points" /> : null}
-
-              {user ? (
-                <div className="info">
-                  <div className="image">
-                    <Avatar
-                      size="lg"
-                      src={user?.profile_pic}
-                      zoomed
-                    />
-                  </div>
-
-                  <h1>
-                    {user?.lastName} {user?.firstName}
-                  </h1>
-                </div>
-              ) : null}
-            </div>
-
-            <FormCtrl>
-              <Input
-                fullWidth
-                bordered
-                aria-label=".."
-                color="primary"
-                placeholder="Email...."
-                size="lg"
-                name="email"
-                value={email}
-                onChange={onChange}
-              />
-            </FormCtrl>
             <FormCtrl>
               <Input.Password
                 fullWidth
@@ -132,13 +76,20 @@ const SignIn = () => {
                 onChange={onChange}
               />
             </FormCtrl>
-            <Button
-              rounded
-            
-              type="submit"
-              size={"lg"}
-              disabled={isLoading}
-            >
+            <FormCtrl>
+              <Input.Password
+                fullWidth
+                bordered
+                aria-label=".."
+                color="primary"
+                placeholder="Confirm Password...."
+                size="lg"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={onChange}
+              />
+            </FormCtrl>
+            <Button rounded type="submit" size={"lg"} disabled={isLoading}>
               {isLoading ? (
                 <Loading type="points" color={"white"} className={"btn"} />
               ) : (
@@ -152,4 +103,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default ResetPassword;

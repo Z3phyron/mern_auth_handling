@@ -30,7 +30,7 @@ app.use("/", require("./routes/root"));
 app.use("/api/auth", require("./routes/authRoutes"));
 
 // Serve frontend
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "") {
   app.use(express.static("views/build"));
 
   app.get("*", (req, res) =>

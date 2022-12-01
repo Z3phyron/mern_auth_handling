@@ -23,6 +23,7 @@ export const Container = styled.div`
   align-items: center;
   height: 100vh;
   animation: ${fadeIn} 0.3s ease;
+  color: ${(props) => props.theme.text};
 `;
 export const Wrapper = styled.div``;
 export const Form = styled.form`
@@ -31,6 +32,7 @@ export const Form = styled.form`
   gap: 30px;
 
   .user {
+    color: ${(props) => props.theme.text};
     display: flex;
 
     margin-bottom: 20px;
@@ -53,6 +55,13 @@ export const FormCtrl = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 30px;
+
+
+  input {
+     color: ${(props) => props.theme.text};
+     /* border: 1px solid   ${(props) => props.theme.text}; */
+  }
+ 
 
   @media screen and (max-width: 900px) {
     flex-direction: column;

@@ -115,6 +115,10 @@ export const FormCtrl = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 30px;
+  input {
+    color: ${(props) => props.theme.text};
+    /* border: 1px solid   ${(props) => props.theme.text}; */
+  }
 
   @media screen and (max-width: 900px) {
     /* flex-direction: column; */

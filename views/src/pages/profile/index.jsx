@@ -64,6 +64,8 @@ const Index = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     const userData = new FormData();
+
+    // if (image == null) {}
     userData.append("firstName", firstName);
     userData.append("lastName", lastName);
     userData.append("email", email);
@@ -185,7 +187,7 @@ const Index = () => {
             </FormCtrl>
             <Button
               rounded
-              shadow
+             
               type="submit"
               size={"md"}
               disabled={isLoading}

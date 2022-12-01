@@ -59,13 +59,17 @@ const forgotPassword = async (userData) => {
 const resetPassword = async (userData) => {
   const response = await axios.put(API_URL + "reset-password", userData);
 
-  // if (response.data) {
-  //   localStorage.setItem("user", JSON.stringify(response.data));
-  // }
+
 
   return response.data;
 };
 
+// verify token from forgot password
+const verifyMail = async (token) => {
+  const response = await axios.get(`${API_URL}verifyMail?token=${token}`);
+
+  return response.data;
+};
 // verify token from forgot password
 const verifyToken = async (token) => {
   const response = await axios.get(`${API_URL}verifyToken?token=${token}`);
@@ -106,6 +110,7 @@ const authService = {
   loadUser,
   getUser,
   refresh,
+  verifyMail
 };
 
 export default authService;
