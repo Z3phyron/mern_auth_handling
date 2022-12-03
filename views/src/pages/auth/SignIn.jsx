@@ -1,7 +1,7 @@
 import { Avatar, Button, Input, Loading } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout";
-import { Container, Form, FormCtrl, Wrapper } from "./styles";
+import { Container, Form, FormCtrl, LinkEl, Wrapper } from "./styles";
 import { useDispatch, useSelector } from "react-redux";
 import useAxiosPrivate from "../../hook/useAxiosPrivate";
 import toast from "react-hot-toast";
@@ -11,7 +11,7 @@ import {
   reset,
   signIn,
 } from "../../features/auth/AuthSlice";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const INITAIL_FORM = {
   email: "",
@@ -132,6 +132,9 @@ const SignIn = () => {
                 onChange={onChange}
               />
             </FormCtrl>
+            <small className="link">
+              <LinkEl to='/forgot-password'>Forgot Password ?</LinkEl>
+            </small>
             <Button
               rounded
             

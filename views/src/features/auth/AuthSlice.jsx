@@ -354,7 +354,6 @@ export const authSlice = createSlice({
       .addCase(verifyMail.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-       
         state.message = "Email Verified  Successully!!!";
       })
       .addCase(verifyMail.rejected, (state, action) => {

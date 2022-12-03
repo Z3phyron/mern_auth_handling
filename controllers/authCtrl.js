@@ -8,8 +8,11 @@ const {
   signAccessToken,
   signRefreshToken,
   verifyRefreshToken,
+  emailToken,
+  verifyEmailToken,
 } = require("../helpers/jwt_helper");
 const { signInSchema, signUpSchema } = require("../helpers/validation_schema");
+const { SendMail } = require("../utils/sendMail");
 
 // @desc    Register new user
 // @route   POST /api/auth
@@ -31,6 +34,18 @@ const SignUpUser = asyncHandler(async (req, res) => {
     //hide unnecessary fields
     user.password = undefined;
     user.__v = undefined;
+
+    //create email verification token
+
+    // email verification link
+    const BaseUrl = process.env.BASE_URL;
+    const userId = user._id;
+    const vToken = await emailToken(userId);
+    const url = `${BaseUrl}verifyMail/?token=${vToken}`;
+    const subject = "Email Verification";
+
+    // Send the email
+    await SendMail(user.email, subject, url);
 
     const accessToken = await signAccessToken(user._id);
     const refreshToken = await signRefreshToken(user._id);
@@ -69,6 +84,19 @@ const SignInUser = asyncHandler(async (req, res) => {
     user.password = undefined;
     user.__v = undefined;
 
+    if (!user.verified) {
+      // email verification link
+      const BaseUrl = process.env.BASE_URL;
+      const userId = user._id;
+      const vToken = await emailToken(userId);
+      const url = `${BaseUrl}verifyMail/?token=${vToken}`;
+      const subject = "Email Verification";
+
+      // Send the email
+      await SendMail(user.email, subject, url);
+      throw createHttpError.Unauthorized("please check your email to verify your account");
+    }
+
     const accessToken = await signAccessToken(user._id);
     const refreshToken = await signRefreshToken(user._id);
 
@@ -81,6 +109,37 @@ const SignInUser = asyncHandler(async (req, res) => {
     });
 
     res.status(200).json({ accessToken });
+  } catch (error) {
+    res.status(500);
+    throw new Error(error);
+  }
+});
+
+// @desc    Sign in user
+// @route   POST /api/auth/signIn
+// @access  Public
+const VerifyMail = asyncHandler(async (req, res) => {
+  const { token } = req.query;
+  let user;
+  console.log(token);
+  try {
+    if (!token) throw createHttpError.BadRequest();
+    const userId = await verifyEmailToken(token);
+
+    user = await User.findByIdAndUpdate(
+      userId,
+      {
+        verified: true,
+      },
+      {
+        new: true,
+        useFindAndModify: true,
+      }
+    );
+
+    res.status(201).json({
+      message: "success",
+    });
   } catch (error) {
     res.status(500);
     throw new Error(error);
@@ -162,14 +221,14 @@ const UpdateMe = asyncHandler(async (req, res) => {
       profile_pic: cloudFile.secure_url,
       ...req.body,
       address: {
-      ...req.body
+        ...req.body,
       },
     };
   } else {
     userUpdate = {
       ...req.body,
       address: {
-      ...req.body
+        ...req.body,
       },
     };
   }
@@ -199,4 +258,5 @@ module.exports = {
   GetMe,
   UpdateMe,
   GetUser,
+  VerifyMail,
 };

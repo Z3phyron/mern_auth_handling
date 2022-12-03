@@ -15,7 +15,6 @@ const UserSchema = new Schema(
     },
     phone: {
       type: Number,
-      unique: true,
     },
     firstName: {
       type: String,
@@ -54,7 +53,7 @@ const UserSchema = new Schema(
     },
     verified: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     refreshToken: {
       type: String,

@@ -21,9 +21,9 @@ function App() {
       dispatch(loadUser(axiosPrivate));
       dispatch(reset());
     }
-    setTimeout(() => {
-      dispatch(reset());
-    }, 500);
+    // setTimeout(() => {
+    //   dispatch(reset());
+    // }, 500);
   }, [dispatch, token, axiosPrivate, isError]);
 
   return (

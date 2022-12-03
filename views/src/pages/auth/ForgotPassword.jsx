@@ -58,6 +58,12 @@ const ForgotPassword = () => {
       <Container>
         <Wrapper>
           <Form onSubmit={onSubmit}>
+            <h1>Recover your password</h1>
+            <p>
+               You can request a password reset below. We
+              will send a security code to the email address, please make sure
+              it is correct.
+            </p>
             <FormCtrl>
               <Input
                 fullWidth

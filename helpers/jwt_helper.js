@@ -67,6 +67,36 @@ module.exports = {
       });
     });
   },
+  emailToken: (userId) => {
+    return new Promise((res, rej) => {
+      const payload = {
+        userId,
+      };
+      const secret = process.env.JWT_REFRESH_SECRET;
+      const options = {
+        expiresIn: "1d",
+        issuer: "websiteDomain.com",
+        audience: userId.toString(),
+      };
+      jwt.sign(payload, secret, options, (err, token) => {
+        if (err) rej(createHttpError.InternalServerError());
+        res(token);
+      });
+    });
+  },
+  verifyEmailToken: (emailToken) => {
+   return new Promise((res, rej) => {
+     jwt.verify(
+       emailToken,
+       process.env.JWT_REFRESH_SECRET,
+       (err, payload) => {
+         if (err) return rej(createHttpError.Unauthorized());
+         const userId = payload.aud;
+         res(userId);
+       }
+     );
+   });
+  },
 
   verifyRefreshToken: (refreshToken) => {
     return new Promise((res, rej) => {

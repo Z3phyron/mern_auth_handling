@@ -7,12 +7,14 @@ const {
   UpdateMe,
   RefreshToken,
   GetUser,
+  VerifyMail,
 } = require("../controllers/authCtrl");
 const { verifyAccessToken } = require("../helpers/jwt_helper");
 
 router.route("/").post(SignUpUser);
 
 router.route("/signin").post(SignInUser);
+router.route("/verifyMail").get(VerifyMail);
 
 router
   .route("/me")

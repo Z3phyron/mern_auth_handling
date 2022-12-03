@@ -25,16 +25,32 @@ export const Container = styled.div`
   animation: ${fadeIn} 0.3s ease;
   color: ${(props) => props.theme.text};
 `;
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+  width: 30%;
+  @media screen and (max-width: 900px) {
+    width: 70%;
+  }
+  @media screen and (max-width: 400px) {
+    width: 80%;
+  }
+`;
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
+
+  h1 {
+    font-size: 20px;
+  }
+
+  p {
+    font-size: 15px;
+  }
 
   .user {
     color: ${(props) => props.theme.text};
     display: flex;
-
+margin: auto;
     margin-bottom: 20px;
 
     .info {
@@ -67,4 +83,14 @@ export const FormCtrl = styled.div`
     flex-direction: column;
   }
 `;
-export const LinkEl = styled.div``;
+export const LinkEl = styled.div`
+color: ${ p => p.theme.content};
+`;
+export const Card = styled.div`
+text-align: center;
+line-height: 250%;
+
+button {
+  margin: auto;
+}
+`;
